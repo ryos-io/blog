@@ -1,4 +1,4 @@
-git add .
-git status
-git commit -m "content update"
-git push
+#!/bin/bash
+
+cd /root/ryos-site && git pull origin master >> /var/log/ryos-pull.out
+cd /root/ryos-site && jekyll build >> /var/log/jekyll.out
