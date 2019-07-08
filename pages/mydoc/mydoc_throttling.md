@@ -1,11 +1,11 @@
 ---
 title:  Ramp-up and Throttling
-summary: "A Guide to Tests Users in Simulations"
+summary: "How to control the request volume by Ramp-up and Throttling"
 series: "ACME series"
 weight: 4
 last_updated: July 3, 2016
 sidebar: mydoc_sidebar
-permalink: mydoc_users.html
+permalink: mydoc_throttling.html
 folder: mydoc
 ---
 
