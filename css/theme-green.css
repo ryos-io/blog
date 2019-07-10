@@ -14,7 +14,7 @@ h4 {color: #808080; }
 }
 
 .nav > li.active > a {
-    background-color: #72ac4a;
+    background-color: #008146;
 }
 
 .nav > li > a:hover {
@@ -40,22 +40,22 @@ div.navbar-collapse .dropdown-menu > li > a:hover {
 }
 
 a[data-toggle="tooltip"] {
-    color: #649345;
+    color: #008146;
     font-style: italic;
     cursor: default;
 }
 
 .navbar-inverse {
-    background-color: #72ac4a;
-    border-color: #5b893c;
+    background-color: #00bc66;
+    border-color: #008146;
 }
 
 .navbar-inverse .navbar-nav > .open > a, .navbar-inverse .navbar-nav > .open > a:hover, .navbar-inverse .navbar-nav > .open > a:focus {
-    color: #5b893c;
+    color: #008146;
 }
 
 .navbar-inverse .navbar-nav > .open > a, .navbar-inverse .navbar-nav > .open > a:hover, .navbar-inverse .navbar-nav > .open > a:focus {
-    background-color: #5b893c;
+    background-color: #008146;
     color: #ffffff;
 }
 
@@ -66,8 +66,8 @@ a[data-toggle="tooltip"] {
 
 .btn-primary {
     color: #ffffff;
-    background-color: #5b893c;
-    border-color: #5b893c;
+    background-color: #008146;
+    border-color: #008146;
 }
 
 .btn-primary:hover,
@@ -89,7 +89,7 @@ body.print h3 {color: #E50E51 !important; font-size:14px;}
 body.print h4 {color: #679DCE !important; font-size:14px; font-style: italic;}
 
 .anchorjs-link:hover {
-    color: #4f7233;
+    color: #008146;
 }
 
 div.sidebarTitle {

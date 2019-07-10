@@ -3,14 +3,14 @@ repository: bagdemir/Rhino
 output: web
 # this property is useful for conditional filtering of content that is separate from the PDF.
 
-destination: /var/www/vhosts/bagdemir.com/ryos
+destination: /Users/bagdemir/Workspace/var/www/vhosts/bagdemir.com/ryos
 topnav_title: Ryos.io
 # this appears on the top navigation bar next to the home button
 
-site_title: Ryos - Open Source
+site_title: Ryos.io - Free and Open Source Software
 # this appears in the html browser tab for the site title (seen mostly by search engines, not users)
 
-company_name: Ryos
+company_name: Ryos.io
 # this appears in the footer
 
 github_editme_path: tomjoht/documentation-theme-jekyll/blob/gh-pages/
