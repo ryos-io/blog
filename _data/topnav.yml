@@ -4,8 +4,8 @@ topnav:
 - title: Topnav
   items:
     - title: GitHub
-      external_url: https://github.com/bagdemir/Rhino
-    - title: News
+      external_url: https://github.com/ryos-io/Rhino
+    - title: Blog
       url: /news
 
 #Topnav dropdowns
