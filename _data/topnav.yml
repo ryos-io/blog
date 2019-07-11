@@ -14,14 +14,8 @@ topnav_dropdowns:
   folders:
     - title: Links
       folderitems:
-        - title: Jekyll Talk
-          external_url: https://talk.jekyllrb.com
-        - title: Jekyll documentation
-          external_url: http://jekyllrb.com/docs/home/
-        - title: Jekyll on Stack Overflow
-          external_url: http://stackoverflow.com/questions/tagged/jekyll
-        - title: Jekyll on my blog
-          external_url: http://idratherbewriting.com/category-jekyll/
+        - title: Rhino Core Javadocs
+          external_url: /javadocs/rhinocore
     - title: Projects
       folderitems:
         - title: Rhino Load Testing
