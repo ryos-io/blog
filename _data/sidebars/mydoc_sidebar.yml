@@ -33,7 +33,7 @@ entries:
       output: web
 
     - title: Scenarios
-      url: /mydoc_supported_features.html
+      url: /mydoc_scenarios.html
       output: web, pdf
 
     - title: Reactive Rhino and Load DSL
