@@ -15,7 +15,7 @@ topnav_dropdowns:
     - title: Links
       folderitems:
         - title: Rhino Core Javadocs
-          external_url: /javadocs/rhinocore
+          external_url: http://ryos.io/javadocs/apidocs/
     - title: Projects
       folderitems:
         - title: Rhino Load Testing
