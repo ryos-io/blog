@@ -2,8 +2,8 @@
 
 entries:
 - title: sidebar
-  product: rhino-core
-  version: 1.1.12.RELEASE
+  product: Rhino
+  version: 1.5.0
   folders:
 
   - title:
@@ -19,7 +19,7 @@ entries:
       output: pdf
       type: frontmatter
 
-  - title: Overview
+  - title: Rhino Core
     output: web, pdf
     folderitems:
 
@@ -52,8 +52,12 @@ entries:
       url: /mydoc_reporting.html
       output: web
 
-    - title: Test Users
+    - title: Testing with Users
       url: /mydoc_users.html
+      output: web, pdf
+
+    - title: Services-to-Service Authentication
+      url: /mydoc_s2s.html
       output: web, pdf
 
     - title: Parallelization
@@ -73,14 +77,22 @@ entries:
     folderitems:
 
     - title: Grafana
-      url: /mydoc_release_notes_60.html
+      url: /mydoc_integration_grafana.html
       output: web, pdf
 
     - title: Influx DB
-      url: /mydoc_release_notes_60.html
+      url: /mydoc_integration_influx.html
       output: web, pdf
 
     - title: Vault
+      url: /mydoc_integration_vault.html
+      output: web, pdf
+
+  - title: Rhino PAP
+    output: web, pdf
+    folderitems:
+
+    - title: Technical Notes
       url: /mydoc_release_notes_60.html
       output: web, pdf
 

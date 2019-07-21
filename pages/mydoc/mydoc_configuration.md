@@ -9,18 +9,12 @@ permalink: mydoc_configuration.html
 folder: mydoc
 ---
 
-The Rhino projects require `rhino.properties` test configuration file which contain configuration properties like, test name, endpoint configurations, package to scan, etc. and the configuration file _rhino.properties_ must be located in your classpath.
+The Rhino projects require `rhino.properties` test configuration file which contain configuration properties like endpoint configurations, package to scan, etc. and the configuration file _rhino.properties_ must be located in your classpath.
 
 ```properties
 packageToScan=io.ryos.rhino.sdk
 
-stage.auth.endpoint=https://auth-endpoint/token
-stage.auth.clientId=YourClientId
-stage.auth.clientSecret=123-abc
-stage.auth.apiKey=YourAPIKey
-stage.auth.grantType=password
-stage.auth.userSource=classpath:///test_users.csv
-
+# User Authentication
 dev.auth.endpoint=https://auth-endpoint/token
 dev.auth.clientId=YourClientId
 dev.auth.clientSecret=123-abc
@@ -28,10 +22,25 @@ dev.auth.apiKey=YourAPIKey
 dev.auth.grantType=password
 dev.auth.userSource=classpath:///test_users.csv
 
+# Service Authentication
+dev.oauth.service.authentication=true
+dev.oauth.service.clientId=TestService
+dev.oauth.service.clientSecret=123-secret
+dev.oauth.service.grantType=authorization_code
+dev.oauth.service.clientCode=eyJ4NXUiO12345=
+dev.oauth.bearer=service
+dev.oauth.headerName=X-User-Token
+
+# Influx DB Integration
 db.influx.url=http://localhost:8086
 db.influx.dbName=rhino
 db.influx.username=
 db.influx.password=
+
+# Grafana Integration
+grafana.endpoint=http://localhost:3000
+grafana.token="<token with write access obtained from Grafana under Configuration -> API Keys >"
+
 ```
 Please keep in mind that "auth.*" properties are bound to environments. So, they must be prefixed by environment labels: **dev**, **stage** or **prod** are valid values.
 
@@ -52,6 +61,7 @@ Please keep in mind that "auth.*" properties are bound to environments. So, they
 | **{env}.auth.grantType** | Grant type |
 | **{env}.auth.userSource** |  Path to user source. Core SDK currently supports only classpath CSV files e.g classpath:///test_users.csv  |
 
+For service-to-service authentication please refer to [S2S Authentication](https://github.com/ryos-io/Rhino/wiki/Service-to-Service-Authentication) section.
 
 ### Influx DB Configuration
 
@@ -75,6 +85,16 @@ Please keep in mind that "auth.*" properties are bound to environments. So, they
 |---|---|
 | **reactive.maxConnections** | Number of connections the HTTP client can handle in reactive mode |
 | **runner.parallelisim** | Number of threads in non-reactive mode that a client is allowed to spawn. |
+
+### Http Client Configurations (from 1.6.0) 
+
+|  Property | Description |
+|---|---|
+| **http.maxConnections** | Number of connections the HTTP client can handle in reactive mode |
+| **http.connectTimeout** | Return the maximum time in millisecond an the Http client can wait when connecting to a remote host. |
+| **http.readTimeout** | The maximum time in millisecond an Http client can stay idle. |
+| **http.handshakeTimeout** | Return the maximum time in millisecond an Http client waits until the client-service handshake is completed. |
+| **http.requestTimeout** | Return the maximum time in millisecond an Http client waits until the response is completed. |
 
 ### Accessing Configurations
 
