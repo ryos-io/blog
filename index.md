@@ -52,8 +52,8 @@ Rhino is a lightweight annotation-based JUnit-style load and performance testing
                     </span>
                 </div>
                 <div class="panel-body">
-                    <h4>Service Three</h4>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                    <h4>Rhino Intelligent Monitoring</h4>
+                    <p>Intelligent service monitoring with gap analytics.</p>
                     <a href="#" class="btn btn-primary">Learn More</a>
                 </div>
             </div>
@@ -67,8 +67,8 @@ Rhino is a lightweight annotation-based JUnit-style load and performance testing
                     </span>
                 </div>
                 <div class="panel-body">
-                    <h4>Service Four</h4>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                    <h4>Rhino Predictive Alerting</h4>
+                    <p>Predicting service outages before they occure.</p>
                     <a href="#" class="btn btn-primary">Learn More</a>
                 </div>
             </div>
