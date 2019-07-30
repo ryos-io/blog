@@ -53,7 +53,7 @@ you would create multiple simulations so Rhino does need to know once it starts 
 
 ### Users in Simulations
 
-The framework streams [User](http://ryos.io/javadocs/apidocs/io/ryos/rhino/sdk/users/data/User.html) instances as tokens through the load generation loop. It creates a token in the loop for each user and having the user representation itself, we call that token [UserSession](https://github.com/ryos-io/Rhino/wiki/Sessions), and let the tokens loop through the load generation pipeline. Load generation loop consists of user defined scenarios which are executed with the [UserSession](https://github.com/ryos-io/Rhino/wiki/Sessions). Once all scenarios are executed, the framework starts from the beginning with a fresh token. 
+The framework streams [User](http://ryos.io/static/javadocs/io/ryos/rhino/sdk/users/data/User.html) instances as tokens through the load generation loop. It creates a token in the loop for each user and having the user representation itself, we call that token [UserSession](http://ryos.io/mydoc_sessions.html), and let the tokens loop through the load generation pipeline. Load generation loop consists of user defined scenarios which are executed with the [UserSession](http://ryos.io/mydoc_sessions.html). Once all scenarios are executed, the framework starts from the beginning with a fresh token. 
 
 User sessions are also contextual object which can be used to store data to share among scenarios. After a loop completes, the user session will be discarded and for the next loop a fresh instance will be created. 
 
@@ -87,7 +87,7 @@ You can also add an initialisation step by providing a set-up method which is an
   }
 ```
 
-You can also use [UserSession](https://github.com/ryos-io/Rhino/wiki/Sessions) object to pass information to the scenarios/or DSLs. In the example above, we use the before method to initialise an Integer-object which we increment in scenario and update the value in UserSession, and then we finally recall the value in after()-method.
+You can also use [UserSession](http://ryos.io/mydoc_sessions.html) object to pass information to the scenarios/or DSLs. In the example above, we use the before method to initialise an Integer-object which we increment in scenario and update the value in UserSession, and then we finally recall the value in after()-method.
 
 In addition to `@Before` and `@After` the framework also provides `@Prepare` and `@CleanUp` static methods to prepare the simulation and clean up resources after simulation:
 
@@ -133,4 +133,4 @@ and with ReactiveSimulationRunner:
   }
 ```
  
-Please pay attention to that the prepare and clean-up methods are static ones. They will be executed once in simulation and for every user. Therefore, the information added into [UserSession](https://github.com/ryos-io/Rhino/wiki/Sessions) can not be used in generation loop i.e in scenario method since after every load generation cycle the user session will be cleaned up. If you have data to be initialised in Prepare-method and to make it available during the simulation, you need to use the global session, that is [SimulationSession](https://github.com/ryos-io/Rhino/wiki/Sessions) which is available during the Simulation. 
+Please pay attention to that the prepare and clean-up methods are static ones. They will be executed once in simulation and for every user. Therefore, the information added into [UserSession](http://ryos.io/mydoc_sessions.html) can not be used in generation loop i.e in scenario method since after every load generation cycle the user session will be cleaned up. If you have data to be initialised in Prepare-method and to make it available during the simulation, you need to use the global session, that is [SimulationSession](http://ryos.io/mydoc_sessions.html) which is available during the Simulation. 
