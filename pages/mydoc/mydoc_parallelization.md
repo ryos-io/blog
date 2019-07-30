@@ -1,7 +1,7 @@
 ---
 title:  Parallelization
 summary: "How to control the parallelizaton level in Simulations."
-series: "ACME series"
+series: "Rhino documentation series"
 weight: 4
 last_updated: July 3, 2016
 sidebar: mydoc_sidebar
@@ -20,7 +20,7 @@ In reactive mode, however, the framework spawns as many thread as it is required
 The test developers should pay attention to resource limits that simulations are bound to. In non-reactive mode, blocking scenarios might have performance impact on simulations so the number of threads configuration is the knob to tweak, whereas in reactive mode, or in DSL approach, the max. number of connections:
 
 ```
-reactive.maxConnections=1000
+http.maxConnections=1000
 ```
 
 In reactive mode, the framework will get backpressured once there is no connection available in the pool. 
