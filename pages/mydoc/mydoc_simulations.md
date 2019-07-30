@@ -9,8 +9,8 @@ permalink: mydoc_simulations.html
 folder: mydoc
 ---
 
-Simulations are annotated test entities which will be executed by test runners and generate load according to their 
-implementation (or specification depending on which runner is selected) against an instance under test, iut, e.g a web service. 
+Simulations are annotated test entities which will be executed by test runners and generate synthetic load depending on their 
+implementation (or specification, if reactive Rhino is used) against an instance under test e.g a web service. 
 So as to create a new simulation entity, create a plain Java object with `@Simulation` annotation: 
 
 ```java
@@ -19,35 +19,20 @@ public class PerformanceTestingExample {
 }
 ```
 
-The simulation above does nothing unless test developer add some scenarios to it. A scenario is a method 
-annotated with `@Scenario` and contains the actual implementation of load generator. A simulation 
-might have multiple scenarios defined which are run during testing, independently and parallel (with the 1.2.0 this behavior is going to change):
+The simulation above does nothing unless test developer add some *Scenarios* or *DSLs* into it. A scenario is a method annotated with `@Scenario` annotation and contains the actual load generator implementation whereas a DSL is the definition of the test i.e describing how to run tests whereas scenarios contain what to run. Scenario methods will be run by the framework threads sequentially. The number of threads can be configured in framework's configuration file. If you prefer to use DSLs, then the DSL methods annotated with `@Dsl` annotations, will be materialised into reactive components.
+
+### Working with Scenarios 
+
+A `Simulation` entity starts with `@Simulation` annotation with a name attribute, that indicates which test to run, and at the same time identifies the simulation in reporting. The name must be unique. The `@Simulation` annotation is followed by `@UserRepository`. 
+
+A `Simulation` might consist of multiple scenarios which are sequentially executed during simulation:
 
 ```java
 @Simulation(name = "Server-Status Simulation")
 @UserRepository(factory = OAuthUserRepositoryFactory.class)
 public class RhinoEntity {
 
-  private static final String TARGET = "http://localhost:8089/api/status";
-  private static final String X_REQUEST_ID = "X-Request-Id";
-  private static final String AUTHORIZATION = "Authorization";
-
   private final Client client = ClientBuilder.newClient();
-
-  @Provider(factory = UUIDProvider.class)
-  private String uuid;
-
-  @Before
-  public void setUp(UserSession userSession) {
-    var simUser = (OAuthUser) userSession.getUser();
-    var response = client
-            .target(TARGET)
-            .request()
-            .header(AUTHORIZATION, "Bearer " + simUser.getToken())
-            .header(X_REQUEST_ID, "Rhino-" + uuid)
-            .put();
-  }
-
 
   @Scenario(name = "Health")
   public void performHealth(Measurement measurement, UserSession userSession) {
@@ -56,27 +41,96 @@ public class RhinoEntity {
             .target(TARGET)
             .request()
             .header(AUTHORIZATION, "Bearer " + simUser.getToken())
-            .header(X_REQUEST_ID, "Rhino-" + uuid)
             .get();
 
     measurement.measure("Health API Call", String.valueOf(response.getStatus()));
   }
-
-  @After
-  public void cleanUp(UserSession userSession) {
-    var simUser = (OAuthUser) userSession.getUser();
-    var response = client
-            .target(TARGET)
-            .request()
-            .header(AUTHORIZATION, "Bearer " + simUser.getToken())
-            .header(X_REQUEST_ID, "Rhino-" + uuid)
-            .delete();
-  }
 }
 ```
 
-The name of the simulation is important. In a performance testing project, it is very likely that 
-you will have multiple simulations. Rhino does know which simulation is to be run by the 
-simulation name, so they must be unique. 
+The name of the simulation is important. In a performance and load testing project, probably 
+you would create multiple simulations so Rhino does need to know once it starts which simulation is to be run by the simulation name provided, so they must be unique. 
 
-You can also add an initialisation step by providing a set-up method which is annotated with `@Before` annotation that is run before every single scenario. It is handy to have a `@Before` method to allocate some resources, that your scenario might depend upon. As `@Before`, Rhino also provides an `@After` annotation, to create clean-up method in which method the resources might be cleaned up. 
+### Users in Simulations
+
+The framework streams [User](http://ryos.io/javadocs/apidocs/io/ryos/rhino/sdk/users/data/User.html) instances as tokens through the load generation loop. It creates a token in the loop for each user and having the user representation itself, we call that token [UserSession](https://github.com/ryos-io/Rhino/wiki/Sessions), and let the tokens loop through the load generation pipeline. Load generation loop consists of user defined scenarios which are executed with the [UserSession](https://github.com/ryos-io/Rhino/wiki/Sessions). Once all scenarios are executed, the framework starts from the beginning with a fresh token. 
+
+User sessions are also contextual object which can be used to store data to share among scenarios. After a loop completes, the user session will be discarded and for the next loop a fresh instance will be created. 
+
+<p align="center">
+  <img src="http://ryos.io/static/images/load_generation_loop.png" />
+</p>
+
+The prepare and clean-up steps will be run for each user right before the simulation starts, and after the simulation completes. Prepare and clean-up steps are handy if you want to set up simulations and clean up resources after the simulation.
+
+Your test scenarios might not require any users, in this case the framework creates synthetic users under the hood to make the load generation loop run. 
+
+### Preparing and Cleaning up
+
+You can also add an initialisation step by providing a set-up method which is annotated with `@Before` annotation that is run before every scenario in every loop. It is handy to have a `@Before` method to allocate some resources, that your scenario might depend upon. Like `@Before` the Rhino framework also provides an `@After` annotation is used to clean-up resources. `@After` method is run after every scenario method. 
+
+```java
+  @Before
+  public void setUp(UserSession session) {
+    userSession.add("number", 1);
+  }
+
+  @Scenario(name="Increment")
+  public void scenario(UserSession session) {
+    var newNumber = userSession. <Integer> get("number").map(n -> n+1).orElse(0);
+    userSession.add("number", newNumber);
+  }
+
+  @After
+  public void tearDown(UserSession session) {
+    userSession. <Integer> get("number").ifPresent(n -> System.out.println(n));
+  }
+```
+
+You can also use [UserSession](https://github.com/ryos-io/Rhino/wiki/Sessions) object to pass information to the scenarios/or DSLs. In the example above, we use the before method to initialise an Integer-object which we increment in scenario and update the value in UserSession, and then we finally recall the value in after()-method.
+
+In addition to `@Before` and `@After` the framework also provides `@Prepare` and `@CleanUp` static methods to prepare the simulation and clean up resources after simulation:
+
+```java
+  @Prepare
+  public static void prepare(UserSession userSession) {
+    var webTarget = client.target("http://localhost:8080/my-resource");
+    var invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
+    Response response = invocationBuilder.post(Entity.entity(employee, MediaType.APPLICATION_JSON));
+  }
+
+  @CleanUp
+  public static void cleanUp(UserSession userSession) {
+    var webTarget = client.target("http://localhost:8080/my-resource");
+    var invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
+    Response response = invocationBuilder.delete();
+  }
+```
+
+and with ReactiveSimulationRunner:
+
+```java
+  @Prepare
+  public static LoadDsl prepare(UserSession userSession) {
+    return Start.dsl()
+        .run(http("Create Resource")
+            .header(c -> from(X_REQUEST_ID, "Rhino-" + UUID.randomUUID().toString()))
+            .auth()
+            .endpoint("http://myservice/foo.txt")
+            .upload(() -> file("file:///home/me/foo.txt"))
+            .put()
+            .saveTo("result", Scope.SIMULATION));
+  }
+
+  @CleanUp
+  public static LoadDsl cleanUp(UserSession userSession) {
+    return Start.dsl()
+        .run(http("Clean-up Resource")
+            .header(c -> from(X_REQUEST_ID, "Rhino-" + UUID.randomUUID().toString()))
+            .auth()
+            .endpoint("http://myservice/foo.txt")
+            .delete();
+  }
+```
+ 
+Please pay attention to that the prepare and clean-up methods are static ones. They will be executed once in simulation and for every user. Therefore, the information added into [UserSession](https://github.com/ryos-io/Rhino/wiki/Sessions) can not be used in generation loop i.e in scenario method since after every load generation cycle the user session will be cleaned up. If you have data to be initialised in Prepare-method and to make it available during the simulation, you need to use the global session, that is [SimulationSession](https://github.com/ryos-io/Rhino/wiki/Sessions) which is available during the Simulation. 
