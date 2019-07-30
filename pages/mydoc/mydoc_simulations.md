@@ -1,7 +1,7 @@
 ---
 title:  Simulations
 summary: "A Brief Introduction to Rhino Simulations"
-series: "ACME series"
+series: "Rhnio Documentation"
 weight: 4
 last_updated: July 3, 2016
 sidebar: mydoc_sidebar
