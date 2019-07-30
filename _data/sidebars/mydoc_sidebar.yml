@@ -36,8 +36,12 @@ entries:
       url: /mydoc_scenarios.html
       output: web, pdf
 
-    - title: Reactive Rhino and Load DSL
+    - title: Load DSL
       url: /mydoc_dsl.html
+      output: web, pdf
+
+    - title: Sessions
+      url: /mydoc_sessions.html
       output: web, pdf
 
     - title: Providers
