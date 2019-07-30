@@ -39,5 +39,5 @@ public class RhinoEntity {
 Once the test is started, the dashboard with the id, `$SIM_ID` will get created by the framework, if it does not exist, otherwise the dashboard will be re-used:
 
 <p align="center">
-  <img src="http://ryos.io/static/rhino_grafana.png"  width="712"/>
+  <img src="http://ryos.io/static/rhino_grafana.png"  width="850"/>
 </p>
