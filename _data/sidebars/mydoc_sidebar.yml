@@ -76,7 +76,7 @@ entries:
       url: /mydoc_configuration.html
       output: web
 
-  - title: Integrations
+  - title: Rhino Integrations
     output: web, pdf
     folderitems:
 
@@ -97,13 +97,5 @@ entries:
     folderitems:
 
     - title: Technical Notes
-      url: /mydoc_release_notes_60.html
-      output: web, pdf
-
-  - title: Release Notes
-    output: web, pdf
-    folderitems:
-
-    - title: 1.1.12 Release notes
       url: /mydoc_release_notes_60.html
       output: web, pdf
