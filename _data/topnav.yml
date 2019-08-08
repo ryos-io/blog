@@ -6,7 +6,7 @@ topnav:
     - title: GitHub
       external_url: https://github.com/ryos-io/Rhino
     - title: Blog
-      url: http://bagdemir.com
+      external_url: http://bagdemir.com
 
 #Topnav dropdowns
 topnav_dropdowns:
