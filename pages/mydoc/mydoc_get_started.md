@@ -20,7 +20,7 @@ Before you get started:
 
 * Rhino projects are built as Docker containers, so you will need Docker installed on your computer to be able to test your simulations.
 
-### What is Rhino Load and Performance Testing Framework ?
+### What is Rhino ?
 
 Rhino Load and Performance Testing Framework is a sub-project of the Rhino umbrella project and an SDK which 
 enables developers to write load and performance tests in JUnit style. With annotation 
@@ -57,7 +57,7 @@ You may choose to create a Rhino project without using the Rhino archetype. In t
 
 **Rhino-hello-world**  located in the project's root, might be a good starting point if you want to play around. 
 
-### Writing your first Test with Scenarios
+### Writing your first Simulation with Scenarios
 
 Rhino projects do consist of a main-method to run simulations and simulation 
 entities which are annotated with Rhino annotations. An example application might look as follows: 
@@ -76,14 +76,13 @@ public class Rhino {
 }
 ```
 
-`Simulation` is a configurable load testing controller instance which expects a configuration file in the classpath ( therefore `classpath://` prefix is important) and the name of the simulation to be run. You can also put the properties file outside of the classpath in the file system: "file///home/user/rhino.properties"
+`Simulation` is the load testing controller instance which requires a configuration file in the classpath ( therefore `classpath://<absolute path to configuration file>` prefix is important) and the name of the simulation to be run. You can also put the properties file outside of the classpath in the file system: "file///home/user/rhino.properties"
 
 
 The name of the simulation must match the name, set in Simulation annotation:
 
 ```java
 @Simulation(name = "Server-Status Simulation")
-@UserRepository(factory = OAuthUserRepositoryFactory.class)
 public class RhinoEntity {
 
   private static final String TARGET = "http://localhost:8089/api/status";
@@ -107,12 +106,23 @@ public class RhinoEntity {
 }
 ```
 
-Once the your simulation entity is created, you can run the simulation by running the main() - method.
-
-The configuration properties file does contain test application properties like in which package 
-to look up the Simulation entities and further configuration options described in [Configuration](https://github.com/bagdemir/rhino/wiki/Configuration) 
-section: 
+The properties file does contain application configuration like, in which package the framework should search for Simulation entities. A simple **rhino.properties** might look as follows:
 
 ```properties
-packageToScan=com.myproject.tests
+# Where to find simulations
+packageToScan=io.ryos.rhino.sdk.simulations
+
+# Number of threads will be used to run scenarios.
+runner.parallelisim=1
+
+# Http client configurations
+http.maxConnections=10
+http.readTimeout=15000
+
+# node name
+node=docker-dev
 ```
+
+For configuration reference [Configuration](http://ryos.io/mydoc_configuration.html). 
+
+Once the your simulation entity is created, you can run the simulation by running the main() - method.

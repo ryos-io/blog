@@ -70,11 +70,11 @@ Start.dsl()
         .run(<some-spec>)...
 ``` 
 
-## Runners  
+### Runners  
 
 The runners accept `Spec` instances like `HttpSpec` describing an HTTP request. As of 1.6.0 there are two runners in the DSL, `run()` and `runIf()` for conditional executions. 
 
-### run(<Spec>)
+#### run(<Spec>)
 
 Most times, you will work with this runner. It accepts `Spec` instances as parameter: 
 
@@ -90,7 +90,7 @@ run(http("Discovery")
 
 The runner above executes `HttpSpec` discovery. 
 
-### runIf(<Spec>)
+#### runIf(<Spec>)
 
 The `runIf` is a conditional runner. You might want to execute some specs if a conditional holds, e.g:
 
@@ -116,7 +116,7 @@ The `runIf` is a conditional runner. You might want to execute some specs if a c
 
 In the DSL above, the second run will be executed, if the first run returns an HTTP 200. The predicate expects a parameter of UserSession. More about sessions, please refer to [Sessions](https://github.com/ryos-io/Rhino/wiki/Sessions).
 
-### map(<Spec>)
+#### map(<Spec>)
 
 Map runner together with map builder is used to transform one runner's result into another object.
 
