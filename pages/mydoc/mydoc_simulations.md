@@ -116,7 +116,7 @@ The framework streams [User](http://ryos.io/static/javadocs/io/ryos/rhino/sdk/us
 User sessions are also contextual object which can be used to store data to share among scenarios. After a loop completes, the user session will be discarded and for the next loop a fresh instance will be created. 
 
 <p align="center">
-  <img src="https://github.com/ryos-io/Rhino/blob/master/rhino-wiki/load_generation_loop.png" />
+  <img src="http://ryos.io/static/load_loop.jpg" />
 </p>
 
 The prepare and clean-up steps will be run for each user right before the simulation starts, and after the simulation completes. Prepare and clean-up steps are handy if you want to set up simulations and clean up resources after the simulation.
