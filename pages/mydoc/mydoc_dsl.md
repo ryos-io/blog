@@ -160,7 +160,7 @@ return Start.dsl()
         .get());
 ```
 
-In the DSL above, the second run will be executed, if the first run returns an HTTP 200. The predicate expects a parameter of UserSession. More about sessions, please refer to [Sessions](https://github.com/ryos-io/Rhino/wiki/Sessions).
+In the DSL above, the second run will be executed, if the first run returns an HTTP 200. The predicate expects a parameter of UserSession. More about sessions, please refer to [Sessions](http://ryos.io/mydoc_sessions.html).
 
 ### wait
 

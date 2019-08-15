@@ -7,6 +7,7 @@ last_updated: July 3, 2016
 sidebar: mydoc_sidebar
 permalink: mydoc_get_started.html
 folder: mydoc
+toc: false
 ---
 
 The goal of this document is provide a comprehensive guide for test developers who want to write load and performance tests by using Rhino testing framework.
@@ -106,7 +107,7 @@ public class RhinoEntity {
 }
 ```
 
-alternatively you may choose the reactive style and implements a [Load DSL](https://github.com/ryos-io/Rhino/wiki/Reactive-Tests-and-Load-DSL):
+alternatively you may choose the reactive style and implements a [Load DSL](http://ryos.io/mydoc_dsl.html):
 
 ```java
 @Simulation(name = "Reactive Sleep Test")
@@ -143,6 +144,6 @@ http.readTimeout=15000
 node=docker-dev
 ```
 
-Please refer to [Configuration](https://github.com/bagdemir/rhino/wiki/Configuration) for detailed list of available configuration options. 
+Please refer to [Configuration](http://ryos.io/mydoc_configuration.html) for detailed list of available configuration options. 
 
 Once the your simulation entity is created, you can run the simulation by running the main() - method.
