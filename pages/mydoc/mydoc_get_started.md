@@ -9,7 +9,7 @@ permalink: mydoc_get_started.html
 folder: mydoc
 ---
 
-The goal of this document is provide a comprehensive guide for test developers whose goal to write load and performance testing by using Rhino testing framework.
+The goal of this document is provide a comprehensive guide for test developers who want to write load and performance tests by using Rhino testing framework.
 
 ### Prerequisites
 
@@ -36,7 +36,7 @@ developers to create new Rhino performance testing projects from the scratch:
 $ mvn archetype:generate \
   -DarchetypeGroupId=io.ryos.rhino \
   -DarchetypeArtifactId=rhino-archetype \
-  -DarchetypeVersion=1.6.1 \
+  -DarchetypeVersion=1.6.2 \
   -DgroupId=com.acme \
   -DartifactId=my-foo-load-tests
 ```
@@ -51,11 +51,11 @@ You may choose to create a Rhino project without using the Rhino archetype. In t
 <dependency>
   <groupId>io.ryos.rhino</groupId>
   <artifactId>rhino-core</artifactId>
-  <version>1.6.1</version>
+  <version>1.6.2</version>
 </dependency>
 ```
 
-**Rhino-hello-world**  located in the project's root, might be a good starting point if you want to play around. 
+[rhino-hello-world](https://github.com/ryos-io/Rhino/tree/master/rhino-hello-world) located in the project's root, might be a good starting point if you want to play around. 
 
 ### Writing your first Simulation with Scenarios
 
@@ -106,6 +106,26 @@ public class RhinoEntity {
 }
 ```
 
+alternatively you may choose the reactive style and implements a [Load DSL](https://github.com/ryos-io/Rhino/wiki/Reactive-Tests-and-Load-DSL):
+
+```java
+@Simulation(name = "Reactive Sleep Test")
+@Runner(clazz = ReactiveHttpSimulationRunner.class)
+public class ReactiveSleepTestSimulation {
+
+  @Dsl(name = "Health")
+  public LoadDsl performHealth() {
+    return Start
+        .dsl()
+        .run(http("Health API Call")
+            .header(c -> from(X_REQUEST_ID, "Rhino-" + UUID.randomUUID().toString()))
+            .endpoint(TARGET)
+            .get()
+            .saveTo("result"));
+  }
+}
+```
+
 The properties file does contain application configuration like, in which package the framework should search for Simulation entities. A simple **rhino.properties** might look as follows:
 
 ```properties
@@ -123,6 +143,6 @@ http.readTimeout=15000
 node=docker-dev
 ```
 
-For configuration reference [Configuration](http://ryos.io/mydoc_configuration.html). 
+Please refer to [Configuration](https://github.com/bagdemir/rhino/wiki/Configuration) for detailed list of available configuration options. 
 
 Once the your simulation entity is created, you can run the simulation by running the main() - method.
