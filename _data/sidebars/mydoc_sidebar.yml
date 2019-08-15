@@ -23,7 +23,7 @@ entries:
     output: web, pdf
     folderitems:
 
-    - title: Get started
+    - title: Getting started
       url: /mydoc_get_started.html
       output: web, pdf
       type: homepage
@@ -86,6 +86,10 @@ entries:
 
     - title: Influx DB
       url: /mydoc_integration_influx.html
+      output: web, pdf
+
+    - title: Gatling
+      url: /mydoc_integration_gatling.html
       output: web, pdf
 
     - title: Vault
