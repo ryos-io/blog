@@ -52,11 +52,11 @@ public class PerformanceTestingExample {
 }
 ```
 
-## User Sources
+### User Sources
 
 The framework currently supports file-based user sources only. 
 
-### Files as User Sources
+#### Files as User Sources
 
 The user sources are provided in the properties file depending on the environment (dev, stage, 
 prod):
@@ -95,7 +95,7 @@ testuser_eu3@ryos.io;password123;openid;EU
 
 ```
 
-### Accessing Users in Tests
+#### Accessing Users in Tests
 
 A user session is a context object shared by scenario instances within a simulation. The framework will then pass context between scenarios as sessions objects, so the scenario has access to the objects put into the context by a former scenario:
 
