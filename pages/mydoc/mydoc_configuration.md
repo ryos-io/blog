@@ -7,6 +7,7 @@ last_updated: July 3, 2016
 sidebar: mydoc_sidebar
 permalink: mydoc_configuration.html
 folder: mydoc
+toc: false
 ---
 
 The Rhino projects require `rhino.properties` test configuration file which contain configuration properties like endpoint configurations, package to scan, etc. and the configuration file _rhino.properties_ must be located in your classpath.
@@ -61,7 +62,7 @@ Please keep in mind that "auth.*" properties are bound to environments. So, they
 | **{env}.auth.grantType** | Grant type |
 | **{env}.auth.userSource** |  Path to user source. Core SDK currently supports only classpath CSV files e.g classpath:///test_users.csv  |
 
-For service-to-service authentication please refer to [S2S Authentication](https://github.com/ryos-io/Rhino/wiki/Service-to-Service-Authentication) section.
+For service-to-service authentication please refer to [S2S Authentication](http://ryos.io/mydoc_s2s.html) section.
 
 ### Influx DB Configuration
 
