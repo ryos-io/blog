@@ -7,6 +7,7 @@ last_updated: July 3, 2016
 sidebar: mydoc_sidebar
 permalink: mydoc_sessions.html
 folder: mydoc
+toc: false
 ---
 
 Sessions are contextual objects to keep state during scenario and simulation executions. Sessions are used to share data between scenarios/or DSLs if ReactiveSimulationRunner is used. There are two implementations of sessions:
