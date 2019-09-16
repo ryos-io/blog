@@ -7,6 +7,7 @@ last_updated: July 3, 2016
 sidebar: mydoc_sidebar
 permalink: mydoc_simulations.html
 folder: mydoc
+toc: false
 ---
 
 Simulations are annotated test entities which will be executed by test runners and generate synthetic load depending on their 
