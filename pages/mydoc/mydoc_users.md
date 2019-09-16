@@ -7,12 +7,13 @@ last_updated: July 3, 2016
 sidebar: mydoc_sidebar
 permalink: mydoc_users.html
 folder: mydoc
+toc: false
 ---
 
 Each Rhino Simulation is run by a single user (primary user) which is the consumer of the API, so every simulation needs user sources to run. A user source provides with a list of users with some attributes like login credentials, in case of that they need to log in before they are able to make a request, region, etc. Depending on the type of the user source, users might be stored in a Database, Vault, or flat file which is distributed with the Docker container along with the load testing executable.
 
 <p align="center">
-<img src="http://ryos.io/static/uml_users.jpg" width="480"/>
+<img src="http://ryos.io/static/uml_users.jpg" width="360"/>
 </p>
 
 Users are provided by user sources and managed by user repositories. User repositories controls the life cycle of users i.e they decide when a user is to be returned upon a request from Simulations. Every Simulation instance requires a user repository regardless of test scenarios that might not need any user to generate load. If you omit the user repository, the framework creates a default repository instance to generate pseudo users which make the load generation pipeline work.
