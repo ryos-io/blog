@@ -1,6 +1,6 @@
 ---
 title:  Grafana Integration
-summary: "How to control the parallelizaton level in Simulations."
+summary: "Create dashboards automatically."
 series: "ACME series"
 weight: 4
 last_updated: July 3, 2016
