@@ -9,9 +9,52 @@ permalink: mydoc_s2s.html
 folder: mydoc
 ---
 
-> **_NOTE:_** The feature is from 1.6.0.
+This section is pertaining to the **Load DSL mode**, and demonstrates how to use service to service authentication for OAuth enabled services. In **Scenario mode** you send authorization headers by using your HTTP client and its header methods.  Please refer to the HTTP client's documentation of your choice. 
 
-In web services environment, it is a common practice that the client services send the service token along with the user tokens to APIs being tested. In this case, one of the tokens is used in `Authorization` header as `Bearer` token whereas the other one is sent in a custom header to backend, e.g `X-Service-Token` or user token `X-User-Token` if the Bearer is the service token. So, the client service might choose to send the user token in `Authorization` header and the service token in a custom header, or vice versa. The test developer can set the type of the bearer with the property: `dev.oauth.bearer` whereas the `dev.oauth.headerName` defines the name of the non-bearer token. The following example demonstrates the service token being as bearer, whereas the `X-User-Token` is being used for the user token:
+
+```java
+  @Scenario(name = "Discovery API")
+  public void performHealth(Measurement measurement, UserSession session) {
+
+    User user = session.getUser();
+    OAuthUser oauthUser = null;
+    if (user instanceof OAuthUser) {
+      oauthUser = ((OAuthUser) session.getUser());
+    }
+
+    assert oauthUser != null;
+
+    String serviceAccessToken = null;
+    if (oauthUser.getOAuthService() != null) {
+      serviceAccessToken = oauthUser.getOAuthService().getAccessToken();
+    }
+
+    var response = client
+        .target(TARGET)
+        .request()
+        .header(X_REQUEST_ID, "Rhino-" + uuid)
+        .header("Authorization", "Bearer " + serviceAccessToken)
+        .header("X-User-Token", oauthUser.getAccessToken())
+        .get();
+
+    measurement.measure("Discovery API Call", String.valueOf(response.getStatus()));
+  }
+```
+
+#### Please Note
+Since accessing service token has been so painful, Rhino provides a new provider, OAuthServiceProvider,  available from the version [1.8.0](https://github.com/ryos-io/Rhino/pull/130).
+
+```java
+
+  @Provider(factory = OAuthServiceProvider.class)
+  private OAuthServiceProvider serviceProvider;
+
+```
+
+
+### Using S2S in Load DSL
+
+In web services environment, it is a common practice that client services send a service token along with the user' access tokens to APIs being tested. In this case, one of the tokens is used in `Authorization` header as `Bearer` token whereas the other token is sent in a custom header to the backend, e.g `X-Service-Token`. Other option is to send the service token with Authorization header and to use a custom one for the user's access token. The test developer can set the type of the **Bearer** which is sent in Authorization header with the configuration: `dev.oauth.bearer` whereas the `dev.oauth.headerName` defines the name of the non-bearer token. The following example demonstrates the service token being as bearer, whereas the `X-User-Token` is being used for the user token:
 
 ```
 dev.oauth.service.authentication=true
