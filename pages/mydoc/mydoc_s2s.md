@@ -7,6 +7,7 @@ last_updated: July 3, 2016
 sidebar: mydoc_sidebar
 permalink: mydoc_s2s.html
 folder: mydoc
+toc: false
 ---
 
 This section is pertaining to the **Load DSL mode**, and demonstrates how to use service to service authentication for OAuth enabled services. In **Scenario mode** you send authorization headers by using your HTTP client and its header methods.  Please refer to the HTTP client's documentation of your choice. 
