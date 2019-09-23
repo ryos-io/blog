@@ -56,6 +56,10 @@ entries:
       url: /mydoc_reporting.html
       output: web
 
+    - title: Environments
+      url: /mydoc_environments.html
+      output: web, pdf
+
     - title: Testing with Users
       url: /mydoc_users.html
       output: web, pdf
