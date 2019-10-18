@@ -13,7 +13,9 @@ toc: false
 
 > **_NOTE_**: The reactive runner and the Load DSL is still in Beta. 
 
-In addition to blocking approach in which the threads will be created in simulation's Threadpool and runs the test for a single users,  Rhino does offer reactive mode in which the Scenarios become Specifications which describe how a load test is to be executed in a declarative way rather, not what to run. The specification can be created by using the Rhino DSL which will be materialized by the framework. 
+In addition to blocking approach in which runner threads will be created in simulation's Threadpool and runs the scenarios for a single user,  Rhino does offer reactive-mode in which scenarios become specifications, that describe how a load test is to be executed in a declarative way rather, and not what to run. The specification can be created by using Rhino Load DSL which will be materialized by the framework. 
+
+To enable reactive pipeline, you need to select [ReactiveHttpSimulationRunner](http://ryos.io/static/javadocs/io/ryos/rhino/sdk/runners/ReactiveHttpSimulationRunner.html) runner in the simulation:
 
 ```java
 @Simulation(name = "Reactive Test", durationInMins = 5)
@@ -50,14 +52,6 @@ public class ReactiveBasicHttpGetSimulation {
 
 ```
 
-### How to Enable Reactive Pipeline?
-
-To enable reactive pipeline, you need to select [ReactiveHttpSimulationRunner](http://ryos.io/static/javadocs/io/ryos/rhino/sdk/runners/ReactiveHttpSimulationRunner.html) runner in the simulation:
-
-```java
-@Runner(clazz = ReactiveHttpSimulationRunner.class)
-```
-
 If [ReactiveHttpSimulationRunner](http://ryos.io/static/javadocs/io/ryos/rhino/sdk/runners/ReactiveHttpSimulationRunner.html) is not selected explicitly by adding the Runner annotation, then the [DefaultSimulationRunner](http://ryos.io/static/javadocs/io/ryos/rhino/sdk/runners/DefaultSimulationRunner.html) will be used in simulations which looks for scenario methods.  
 
 ### Writing your first DSL
@@ -71,9 +65,11 @@ Start.dsl()
     .forEach(<some-spec>)...
 ``` 
 
+Rhino provides two main specs to test web services, HttpSpec and SomeSpec. Furthermore, you can extend the Rhino spec framework by adding new specs which fit to your testing use cases. Let's first have a look at Specs which come out of box:
+
 ## Specs
 
-Specs are instances to be run by runners so like an [HttpSpec](http://ryos.io/static/javadocs/io/ryos/rhino/sdk/dsl/specs/HttpSpec.html) describing how a Http request might look like:
+Specs are instances describing the operation to be run by spec runners e.g [HttpSpec](http://ryos.io/static/javadocs/io/ryos/rhino/sdk/dsl/specs/HttpSpec.html) specifies how a specific HTTP request would look like:
 
 ```java
 return Start.dsl()
@@ -88,7 +84,7 @@ return Start.dsl()
 
 ### HttpSpec
 
-[HttpSpec](http://ryos.io/static/javadocs/io/ryos/rhino/sdk/dsl/specs/HttpSpec.html) describes how a Http request looks like. The spec begins with `http(< measurement point >)` and followed by chained builder methods. Measurement point is the identifier and used in reporting. It is the measurement name under which the measurement is recorded.   
+[HttpSpec](http://ryos.io/static/javadocs/io/ryos/rhino/sdk/dsl/specs/HttpSpec.html) describes how Http request looks like which will be run by runners. The spec begins with `http(< measurement point >)` and followed by chained builder methods. Measurement point is the identifier and used in reporting. It is the measurement name under which the measurement is recorded.   
 
 ```java
 http("Files Request")
@@ -119,11 +115,11 @@ Since the DSL-methods will be called only once at the beginning, if you need to 
 
 ## Runners  
 
-The runners accept [Spec](http://ryos.io/static/javadocs/io/ryos/rhino/sdk/dsl/specs/Spec.html) instances like [HttpSpec](http://ryos.io/static/javadocs/io/ryos/rhino/sdk/dsl/specs/HttpSpec.html) describing an HTTP request. As of 1.6.0 there are two runners in the DSL, `run()` and `runIf()` for conditional executions. 
+The runners accept [Spec](http://ryos.io/static/javadocs/io/ryos/rhino/sdk/dsl/specs/Spec.html) instances like [HttpSpec](http://ryos.io/static/javadocs/io/ryos/rhino/sdk/dsl/specs/HttpSpec.html) describing an HTTP request. Let's first have a look at runner methods:
 
-### run
+### run(Spec)
 
-Most times, you will work with this runner. It accepts `Spec` instances as parameter: 
+Most times, you will work with this runner. The `run()` method basically runs a spec. It accepts `Spec` instances as parameter: 
 
 ```java
 run(http("Discovery")
@@ -137,7 +133,7 @@ run(http("Discovery")
 
 The runner above executes [HttpSpec](http://ryos.io/static/javadocs/io/ryos/rhino/sdk/dsl/specs/HttpSpec.html) discovery. 
 
-### runIf
+### runIf(Predicate<UserSession> predicate, Spec spec)
 
 The `runIf` is a conditional runner. You might want to execute some specs if a conditional holds, e.g:
 
@@ -160,9 +156,9 @@ return Start.dsl()
         .get());
 ```
 
-In the DSL above, the second run will be executed, if the first run returns an HTTP 200. The predicate expects a parameter of UserSession. More about sessions, please refer to [Sessions](http://ryos.io/mydoc_sessions.html).
+In the DSL above, the second run will be executed, if the first run returns an HTTP 200. The predicate expects a parameter of UserSession. More about sessions, please refer to [Sessions](https://github.com/ryos-io/Rhino/wiki/Sessions).
 
-### wait
+### wait(Duration)
 
 Wait runner holds the pipeline for the duration given:
 ```java
@@ -171,7 +167,7 @@ Start.dsl()
 ``` 
 
 
-### map
+### map(MapperBuilder<R, T> mapper)
 
 Map runner together with map builder is used to transform one runner's result into another object.
 
@@ -191,7 +187,7 @@ Start.dsl()
 
 In the example, we are mapping the HttpResponse type into Integer by calling getStatusCode()- method on it. 
 
-### forEach
+### forEach(ForEachBuilder<E, R> forEachBuilder)
 
 forEach runner is used to iterate over `Iterable<T>` instances stored in the user session:
 
@@ -218,3 +214,95 @@ forEach runner is used to iterate over `Iterable<T>` instances stored in the use
 ```
 
 The first run of [HttpSpec](http://ryos.io/static/javadocs/io/ryos/rhino/sdk/dsl/specs/HttpSpec.html) returns a list of URIs which are extracted by the method `getURIs(response)` and passed as list of URIs to the forEach runner. forEach runner looks Iterable instances up in the context with the key `in(<key>)` and applies subsequently the spec passed as parameter. 
+
+### runUntil(Predicate<UserSession>, Spec)
+
+runUntil-runner runs a [Spec](http://ryos.io/static/javadocs/io/ryos/rhino/sdk/dsl/specs/Spec.html) instance  until the prediction holds:
+```java
+  @Dsl(name = "Upload File")
+  public LoadDsl singleTestDsl() {
+    return Start
+        .dsl()
+        .runUntil(ifStatusCode(200),
+            http("PUT Request")
+                .header(c -> from(X_REQUEST_ID, "Rhino-" + uuidProvider.take()))
+                .header(X_API_KEY, SimulationConfig.getApiKey())
+                .auth()
+                .upload(() -> file("classpath:///test.txt"))
+                .endpoint((c) -> FILES_ENDPOINT)
+                .put()
+                .saveTo("result"))
+        .run(http("GET on Files")
+            .header(c -> from(X_REQUEST_ID, "Rhino-" + UUID.randomUUID().toString()))
+            .header(X_API_KEY, SimulationConfig.getApiKey())
+            .auth()
+            .endpoint(FILES_ENDPOINT)
+            .get()
+            .saveTo("result2"));
+  }
+
+  private Predicate<UserSession> ifStatusCode(int statusCode) {
+    return s -> s.<Response>get("result").map(Response::getStatusCode).orElse(-1) == statusCode;
+  }
+```
+
+### runAsLongAs(Predicate<UserSession>, Spec)
+
+runAsLongAs-runner runs a [Spec](http://ryos.io/static/javadocs/io/ryos/rhino/sdk/dsl/specs/Spec.html) instance  as long as the prediction holds:
+```java
+    @Dsl(name = "Upload File")
+    public LoadDsl singleTestDsl() {
+        return Start
+            .dsl()
+            .runAsLongAs(ifStatusCode(200),
+                        http("PUT Request")
+                        .header(c -> from(X_REQUEST_ID, "Rhino-" + uuidProvider.take()))
+                        .header(X_API_KEY, SimulationConfig.getApiKey())
+                        .auth()
+                        .upload(() -> file("classpath:///test.txt"))
+                        .endpoint((c) -> FILES_ENDPOINT)
+                        .put()
+                        .saveTo("result"));
+    }
+
+  private Predicate<UserSession> ifStatusCode(int statusCode) {
+    return s -> s.<Response>get("result").map(Response::getStatusCode).orElse(-1) == statusCode;
+  }
+```
+
+### repeat(Spec)
+
+The runner repeats the execution of [Spec](http://ryos.io/static/javadocs/io/ryos/rhino/sdk/dsl/specs/Spec.html) infinitely:
+```java
+  @Dsl(name = "Upload File")
+  public LoadDsl singleTestDsl() {
+    return Start
+        .dsl()
+        .repeat(http("GET on Files")
+            .header(c -> from(X_REQUEST_ID, "Rhino-" + UUID.randomUUID().toString()))
+            .header(X_API_KEY, SimulationConfig.getApiKey())
+            .auth()
+            .endpoint(FILES_ENDPOINT)
+            .get()
+            .saveTo("result"));
+  }
+```
+
+### ensure(Predicate<UserSession>, String reason)
+
+The runner ensures the output of preceding runner by predicate. If the ensure does not succeed, the simulation will be terminated immediately:
+
+```java
+  @Dsl(name = "Upload File")
+  public LoadDsl singleTestDsl() {
+    return Start
+        .dsl()
+        .run(http("GET on Files")
+            .header(X_API_KEY, SimulationConfig.getApiKey())
+            .auth()
+            .endpoint(FILES_ENDPOINT)
+            .get()
+            .saveTo("result2"))
+        .ensure((s) -> s.get("result").isPresent(), "No result object in session!");
+  }
+```

@@ -37,7 +37,7 @@ developers to create new Rhino performance testing projects from the scratch:
 $ mvn archetype:generate \
   -DarchetypeGroupId=io.ryos.rhino \
   -DarchetypeArtifactId=rhino-archetype \
-  -DarchetypeVersion=1.7.2 \
+  -DarchetypeVersion=1.8.2 \
   -DgroupId=com.acme \
   -DartifactId=my-foo-load-tests
 ```
@@ -52,7 +52,7 @@ You may choose to create a Rhino project without using the Rhino archetype. In t
 <dependency>
   <groupId>io.ryos.rhino</groupId>
   <artifactId>rhino-core</artifactId>
-  <version>1.7.2</version>
+  <version>1.8.2</version>
 </dependency>
 ```
 
