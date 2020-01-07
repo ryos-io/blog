@@ -88,6 +88,10 @@ entries:
       url: /mydoc_example1.html
       output: web, pdf
 
+    - title: Multi-user collaboration
+      url: /mydoc_example2.html
+      output: web, pdf
+
   - title: Rhino Integrations
     output: web, pdf
     folderitems:
