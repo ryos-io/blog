@@ -80,6 +80,14 @@ entries:
       url: /mydoc_configuration.html
       output: web
 
+  - title: Example Simulations
+    output: web, pdf
+    folderitems:
+
+    - title: Upload files
+      url: /mydoc_example1.html
+      output: web, pdf
+
   - title: Rhino Integrations
     output: web, pdf
     folderitems:
