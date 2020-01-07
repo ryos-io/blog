@@ -32,10 +32,6 @@ entries:
       url: /mydoc_simulations.html
       output: web
 
-    - title: Scenarios
-      url: /mydoc_scenarios.html
-      output: web, pdf
-
     - title: Load DSL
       url: /mydoc_dsl.html
       output: web, pdf
