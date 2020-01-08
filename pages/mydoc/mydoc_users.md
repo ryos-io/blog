@@ -14,7 +14,7 @@ Each Rhino Simulation is run by a single user (primary user) which is the consum
 
 
 <p align="center">
-<img src="images/uml_users.jpg" width="480"/>
+<img src="https://ryos.io/static/uml_users.jpg" width="480"/>
 </p>
 
 
