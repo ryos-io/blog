@@ -60,14 +60,6 @@ entries:
       url: /mydoc_users.html
       output: web, pdf
 
-    - title: Services-to-Service Authentication
-      url: /mydoc_s2s.html
-      output: web, pdf
-
-    - title: Parallelization
-      url: /mydoc_parallelization.html
-      output: web, pdf
-
     - title: Ramp-up and Throttling
       url: /mydoc_throttling.html
       output: web
