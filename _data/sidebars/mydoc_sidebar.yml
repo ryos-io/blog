@@ -52,17 +52,9 @@ entries:
       url: /mydoc_reporting.html
       output: web
 
-    - title: Environments
-      url: /mydoc_environments.html
-      output: web, pdf
-
     - title: Testing with Users
       url: /mydoc_users.html
       output: web, pdf
-
-    - title: Ramp-up and Throttling
-      url: /mydoc_throttling.html
-      output: web
 
     - title: Configuration
       url: /mydoc_configuration.html
