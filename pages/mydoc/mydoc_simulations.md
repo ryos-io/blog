@@ -94,3 +94,32 @@ public LoadDsl setUp() { ❷
 ```
 
 Let us have a look at the example above. ❶ The preparation method starts with `@Before` annotation. You can call the method what you want. The `@Before` method must return ❷ a LoadDsl instance which is created by chained DSL calls starting with ❸. The output of HTTP specs can be stored in sessions  ❹ and they can be accessed in following HTTP calls by access the objects with their session keys ❺. 
+
+### Ramp-up and Throttling
+
+The number of requests the framework is to make, can be limited with `@Throttle` annotation on entity classes. 
+The `@RampUp` annotation is used to control the request volume while load testing starts. 
+
+Ramp up requires three attributes, start RPS, that is the request-per-second at start, and a target RPS and the duration, in which the ramp up is applied:
+
+```java
+@Simulation(name = "Reactive Test", durationInMins = 5)
+@Runner(clazz = ReactiveHttpSimulationRunner.class)
+@UserRepository(factory = OAuthUserRepositoryFactory.class)
+@RampUp(startRps = 10, targetRps = 2000, duration = 1)
+public class RhinoEntity {
+}
+```
+
+and the throttling is similar to ramp-up setup: 
+
+```java
+@Simulation(name = "Reactive Test", durationInMins = 5)
+@Runner(clazz = ReactiveHttpSimulationRunner.class)
+@UserRepository(factory = OAuthUserRepositoryFactory.class)
+@Throttle(numberOfRequests = 1000, durationInMins = 1)
+public class RhinoEntity {
+}
+```
+
+This time, the number of request, that the framework is to make, is limited by numberOfRequests value till the durationInMins expires.
