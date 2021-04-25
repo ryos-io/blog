@@ -3,7 +3,7 @@ repository: bagdemir/Rhino
 output: web
 # this property is useful for conditional filtering of content that is separate from the PDF.
 
-destination: /var/www/vhosts/bagdemir.com/ryos
+destination: /home/void/websites/ryos.io/target
 keep_files: [ static ]
 topnav_title: Ryos.io
 # this appears on the top navigation bar next to the home button
